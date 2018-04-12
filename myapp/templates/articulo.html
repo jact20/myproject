@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block container %}
+	<article>
+		<h2>{{ articulo.titulo}}</h2>
+		Publicado hace <strong>{{ articulo.fecha|timesince }}</strong> |
+			Por <strong>{{ articulo.autor.get_full_name }}</strong> | 
+			<strong>{{ articulo.likes }}</strong> me gusta
+			
+			<img class="portada" src="/media/{{ articulo.portada }}" alt="portada">
+
+			<div>
+			{{ articulo.contenido|linebreaks}}
+			</div>
+
+			<p>
+				<a href="{% url 'like' articulo.id 'like' %}" class="btn btn-primary">
+				<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+				Me gusta
+				({{ articulo.likes }})
+				</a>
+
+				<a href="{% url 'like' articulo.id 'dislike' %}" class="btn btn-danger">
+				<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+				No me gusta
+				({{ articulo.dislike }})
+				</a>
+
+			</p>
+	</article>
+
+	<h2>Comentarios</h2>
+	{% for comentario in articulo.comentario_set.all %}
+	<p class="well">
+		Publicado hace <strong>{{ comentario.fecha|timesince }}</strong> <br>
+		{{ comentario }}
+	</p>
+	{% endfor %}
+
+{% endblock %}
